@@ -171,6 +171,9 @@ class LongPoll():
                 eventlet.sleep(1)
                 eventlet.spawn_after(0,self.pull_lp, self.pool.servers[server]['lp_address'],server, False)
             return
+        if info['lp_type'] != 'block':
+            eventlet.spawn_n(self.pull_lp, self.pool.servers[server]['lp_address'], server, False)
+            return;
         try:
             output = True
             response = json.loads(body)
